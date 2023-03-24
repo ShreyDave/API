@@ -31,7 +31,7 @@ const studentsSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-}, { versionKey: false })
+},{ versionKey: false })
 
 const studentsData = new mongoose.model("studentData", studentsSchema);
 module.exports = studentsData;
