@@ -5,21 +5,44 @@ const app = express();
 const port = process.env.PORT || 3000;
 app.use(express.json());
 
-app.get("/" , (req,res) => {
+app.get("/", (req, res) => {
     res.send("Home page");
 })
 
-app.post("/postdata" , (req,res) => {
-    const users = new students(req.body);
-    users.save().then(() => {
-        res.status(201).send(users);
-    }).catch((mongoerror) => {
-        res.status(400).send(mongoerror);
-        console.log(mongoerror , "data not stored");
-    })
-    console.log(req.body);
+app.post("/postdata", async (req, res) => {
+    try {
+        const user = new students(req.body)
+        const postdata = await user.save();
+        res.status(200).send(postdata)
+        console.log(req.method, postdata);
+    } catch (posterror) {
+        res.status(400);
+        console.log(posterror , "data can not posted");
+    }
 })
 
-app.listen(port , () => {
+app.post("/postdata", async (req, res) => {
+    try {
+        const getdata = await students.find();
+        res.status(200).send(getdata);
+        console.log(req.method, getdata);
+    } catch (geterror) {
+        res.status(400);
+        console.log(geterror, "data can not get");
+    }
+})
+
+app.get("/getdata", async (req, res) => {
+    try {
+        const getdata = await students.find();
+        res.status(200).send(getdata);
+        console.log(req.method, getdata);
+    } catch (geterror) {
+        res.status(400);
+        console.log(geterror, "data can not get");
+    }
+})
+
+app.listen(port, () => {
     console.log(`connection is set up at ${port}`);
 })
