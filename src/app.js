@@ -1,19 +1,22 @@
 const express = require("express");
-const students = require("./mongodb")
+const students = require("./mongodb");
+const dotenv = require('dotenv');
+dotenv.config();
 require("./mongodb")
 const app = express();
 const port = process.env.PORT || 3000;
+console.log(process.env.PORT, "***" );
 app.use(express.json());
 
 /*Home Page route*/
 
-app.get("/", async(req, res) => {
+app.get("/", async (req, res) => {
     try {
         res.status(200).send("Home page");
-        console.log(req.method , ", Home Page Called");
+        console.log(req.method, ", Home Page Called");
     } catch (error) {
         res.status(400).send(error)
-        console.log(req.method , ", Home Page did not Called");
+        console.log(req.method, ", Home Page did not Called");
     }
 })
 
@@ -24,8 +27,8 @@ app.post("/postapi", async (req, res) => {
         const user = new students(req.body)
         const postdata = await user.save();
         res.status(200).send(postdata)
-        console.log(req.method,", POST Api called");
-    }catch (posterror) {
+        console.log(req.method, ", POST Api called");
+    } catch (posterror) {
         res.status(400).send(posterror);
         console.log("data can not posted");
     }
@@ -37,7 +40,7 @@ app.get("/getapi", async (req, res) => {
     try {
         const getdata = await students.find();
         res.status(200).send(getdata);
-        console.log(req.method , ", GET Api called");
+        console.log(req.method, ", GET Api called");
     } catch (geterror) {
         res.status(400);
         console.log("data can not get");
@@ -46,14 +49,14 @@ app.get("/getapi", async (req, res) => {
 
 /*Patch API*/
 
-app.patch("/postapi/:id" , async(req,res) => {
+app.patch("/postapi/:id", async (req, res) => {
     try {
         const _id = req.params.id;
-        const updatedata = await students.findByIdAndUpdate(_id , req.body ,{
-            new : true
+        const updatedata = await students.findByIdAndUpdate(_id, req.body, {
+            new: true
         });
         res.status(200).send(updatedata);
-        console.log(req.method,", PATCH Api called");
+        console.log(req.method, ", PATCH Api called");
     } catch (patcherror) {
         res.status(400).send(patcherror);
         console.log("Data can not Updated");
@@ -62,7 +65,7 @@ app.patch("/postapi/:id" , async(req,res) => {
 
 /*DELETE API*/
 
-app.delete("/postapi/:id" , async(req,res) => {
+app.delete("/postapi/:id", async (req, res) => {
     try {
         const deletedata = await students.findByIdAndDelete(req.params.id)
         if (!req.params.id) {
