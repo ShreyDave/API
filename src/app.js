@@ -19,7 +19,7 @@ app.post("/postapi", async (req, res) => {
         const postdata = await user.save();
         res.status(200).send(postdata)
         console.log(req.method,", data posted");
-    } catch (posterror) {
+    }catch (posterror) {
         res.status(400).send(posterror);
         console.log("data can not posted");
     }
@@ -53,6 +53,26 @@ app.patch("/postapi/:id" , async(req,res) => {
         console.log("Data can not Updated");
     }
 })
+
+/*DELETE API*/
+
+app.delete("/postapi/:id" , async(req,res) => {
+    try {
+        const deletedata = await students.findByIdAndDelete(req.params.id)
+        if (!req.params.id) {
+            res.status(400).send()
+            console.log("**");
+        } else {
+            res.status(200).send(deletedata)
+            console.log("//");
+        }
+    } catch (deleteerror) {
+        res.status(400).send(deleteerror);
+        console.log("00");
+    }
+})
+
+/*Port Listen*/
 
 app.listen(port, () => {
     console.log(`connection is set up at ${port}`);
