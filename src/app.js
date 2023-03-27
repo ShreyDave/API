@@ -7,8 +7,14 @@ app.use(express.json());
 
 /*Home Page route*/
 
-app.get("/", (req, res) => {
-    res.send("Home page");
+app.get("/", async(req, res) => {
+    try {
+        res.status(200).send("Home page");
+        console.log(req.method , ", Home Page Called");
+    } catch (error) {
+        res.status(400).send(error)
+        console.log(req.method , ", Home Page did not Called");
+    }
 })
 
 /*POST API*/
@@ -18,7 +24,7 @@ app.post("/postapi", async (req, res) => {
         const user = new students(req.body)
         const postdata = await user.save();
         res.status(200).send(postdata)
-        console.log(req.method,", data posted");
+        console.log(req.method,", POST Api called");
     }catch (posterror) {
         res.status(400).send(posterror);
         console.log("data can not posted");
@@ -31,7 +37,7 @@ app.get("/getapi", async (req, res) => {
     try {
         const getdata = await students.find();
         res.status(200).send(getdata);
-        console.log(req.method , ", data geted");
+        console.log(req.method , ", GET Api called");
     } catch (geterror) {
         res.status(400);
         console.log("data can not get");
@@ -47,7 +53,7 @@ app.patch("/postapi/:id" , async(req,res) => {
             new : true
         });
         res.status(200).send(updatedata);
-        console.log(req.method,", Data Updated");
+        console.log(req.method,", PATCH Api called");
     } catch (patcherror) {
         res.status(400).send(patcherror);
         console.log("Data can not Updated");
