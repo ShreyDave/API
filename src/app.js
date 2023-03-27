@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
 
 /*POST API*/
 
-app.post("/postdata", async (req, res) => {
+app.post("/postapi", async (req, res) => {
     try {
         const user = new students(req.body)
         const postdata = await user.save();
@@ -27,7 +27,7 @@ app.post("/postdata", async (req, res) => {
 
 /*GET API*/
 
-app.get("/getdata", async (req, res) => {
+app.get("/getapi", async (req, res) => {
     try {
         const getdata = await students.find();
         res.status(200).send(getdata);
@@ -35,6 +35,22 @@ app.get("/getdata", async (req, res) => {
     } catch (geterror) {
         res.status(400);
         console.log("data can not get");
+    }
+})
+
+/*Patch API*/
+
+app.patch("/postapi/:id" , async(req,res) => {
+    try {
+        const _id = req.params.id;
+        const updatedata = await students.findByIdAndUpdate(_id , req.body ,{
+            new : true
+        });
+        res.status(200).send(updatedata);
+        console.log(req.method,", Data Updated");
+    } catch (patcherror) {
+        res.status(400).send(patcherror);
+        console.log("Data can not Updated");
     }
 })
 
