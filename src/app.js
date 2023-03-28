@@ -86,3 +86,5 @@ app.delete("/postapi/:id", async (req, res) => {
 app.listen(port, () => {
     console.log(`connection is set up at ${port}`);
 })
+
+// all the api code will store hear
